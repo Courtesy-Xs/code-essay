@@ -9,6 +9,11 @@ namespace N
     }
 } // namespace N
 
+// Compiler can't find proper implementation of operator + for class C if code seg is set here
+// int operator+(int i , N::C c)
+// {
+//     return i+1;
+// }
 
 
 #include <numeric>

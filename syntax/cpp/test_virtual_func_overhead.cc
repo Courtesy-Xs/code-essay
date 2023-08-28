@@ -4,6 +4,8 @@
 #include <random>
 #include <vector>
 
+//其实虚函数还有一个分支预测的问题，这个测试并没有体现出来
+
 enum class Type {
     A,B,C,D,E
 };

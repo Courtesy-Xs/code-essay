@@ -13,6 +13,7 @@ void func1()
 class Point3d
 {
 public:
+    // 符号表里没有这个文件
     static int point3d_x;
     const static int point3d_y = 3;
     static int point3d_z;
