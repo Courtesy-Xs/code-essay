@@ -33,12 +33,12 @@ __device__ int block_reduce(int* shm)
     {
         shm[warp_id] = val;
     }
-    if(warp_id==0)
+    if(warp_id==0&&lane_id<8)
     {
-        sum = shm[warp_id];
-        sum += __shfl_down_sync(0xf,sum,4);
-        sum += __shfl_down_sync(0xf,sum,2);
-        sum += __shfl_down_sync(0xf,sum,1);
+        sum = shm[lane_id];
+        sum += __shfl_down_sync(0xff,sum,4);
+        sum += __shfl_down_sync(0xff,sum,2);
+        sum += __shfl_down_sync(0xff,sum,1);
     }
 
     return sum;
@@ -56,7 +56,12 @@ __global__ void ker_reduce(int* src, int len, volatile int* result, unsigned int
 
     __syncthreads();
 
-    result[blockIdx.x] = block_reduce(shm);
+    int tmp = block_reduce(shm);
+
+    if(threadIdx.x==0)
+    {
+        result[blockIdx.x] = tmp;
+    }
 
     __threadfence();
 
